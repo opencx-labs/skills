@@ -1,0 +1,4 @@
+.skills-mirror/generated.txt
+README.md
+widget/opencx-widget-integration/SKILL.md
+widget/opencx-widget-migration/SKILL.md
