@@ -17,7 +17,7 @@ the user's version choice. Check registry tags when selecting a new version:
 npm view @opencx/widget-react dist-tags --json --prefer-online
 ```
 
-These examples pin the published stable release `5.4.2`. Re-check registry tags
+These examples pin the published stable release `5.7.2`. Re-check registry tags
 before choosing a newer version. Use a prerelease only when requested. To remain on v4, pin `4.0.63` instead of `latest`, which can
 move to a new major. Do not add v5-only options to a v4 installation. Installing
 this skill does not install the widget.
@@ -41,7 +41,7 @@ this order; `defer` completes before `DOMContentLoaded`.
 ```html
 <script
   defer
-  src="https://unpkg.com/@opencx/widget@5.4.2/dist-embed/script.js"
+  src="https://unpkg.com/@opencx/widget@5.7.2/dist-embed/script.js"
 ></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {
@@ -54,7 +54,7 @@ For inline HTML, provide `<div id="opencx-root"></div>` in the body and set
 `inline: true`. Mount only one integration on a page; do not also mount React
 `Widget` beside the script embed.
 
-Widget 5.4.2's `dist-embed/script.js` is a self-contained classic script. Copying
+Widget 5.7.2's `dist-embed/script.js` is a self-contained classic script. Copying
 that file is sufficient for self-hosting the widget code; it does not fetch a
 separate `widget.js` or lazy code chunks. API, attachment and configured asset
 requests still need the host's normal permissions. Verify CSP with the script
@@ -65,7 +65,7 @@ when replacing them with a stable v5 build.
 ## React installation
 
 ```bash
-npm install --save-exact @opencx/widget-react@5.4.2
+npm install --save-exact @opencx/widget-react@5.7.2
 ```
 
 Mount the widget once in the app shell:
@@ -97,10 +97,17 @@ import `react-native-get-random-values` first, polyfill `structuredClone` and
 `TextDecoderStream` before the widget is imported where the runtime lacks them,
 and call `useAgentChatUi().resumeInterruptedTurn()` when `AppState` becomes
 `active` and when connectivity returns. A wrapper around `expoFetch` should
-return its response unchanged: React Native's global `Response` has no readable
-body, so the widget reads a rebuilt response's reply again through the global
-fetch and logs a warning. The headless package README has the snippet, and
-`examples/react-native` runs the checks.
+return its response unchanged. From 5.7.1, an unreadable response is retried
+through the global fetch and logs a warning once; if that fetch cannot stream
+either, the reply appears once saved. The headless package no longer requires
+`react-dom`. Use the [headless guide](https://docs.open.cx/widget/custom-components-headless)
+for the polyfill and foreground-resume snippets.
+
+A failed send clears in 5.7.1 once its saved reply is confirmed. From 5.7.2,
+a failed resume also clears once a settled turn is confirmed to answer the
+visitor's latest message and its reply is visible. Keep custom error UI bound
+to `useAgentChatUi().turnFailed`; do not retain a separate failure after it
+clears. Verify recovery when reopening mid-reply, including before history loads.
 
 ## Configure the public API
 
@@ -132,7 +139,7 @@ Use the installed `WidgetConfig` declaration for exact keys and defaults.
 
 From 5.5.0, the script embed (`initOpenScript`) streams when `streaming` is
 omitted and the organization supports it; `streaming: false` keeps polling.
-Earlier script versions, including the pinned examples above, stream only with
+Earlier script versions stream only with
 `streaming: true`. In the React and headless packages, omitted or false keeps
 polling, including with v2 agents and
 verified users; set `streaming: true` only for requested live features supported

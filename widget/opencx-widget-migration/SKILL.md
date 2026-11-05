@@ -16,18 +16,18 @@ where the migration requires a change. This skill does not require another skill
 npm view @opencx/widget-react dist-tags --json --prefer-online
 ```
 
-These examples pin the published stable release `5.4.2`. Re-check registry tags
+These examples pin the published stable release `5.7.2`. Re-check registry tags
 before selecting a newer target; use a prerelease only when requested. Keep the
 old version and configuration for rollback. Customers staying on v4 should pin
 `4.0.63`, since `latest` can move to a new major. For a repeatable stable migration:
 
 ```bash
-npm install --save-exact @opencx/widget-react@5.4.2
+npm install --save-exact @opencx/widget-react@5.7.2
 ```
 
 Use the customer's package manager. For headless integrations, install
-`@opencx/widget-react-headless@5.4.2` and
-`@opencx/widget-core@5.4.2`. Match any other directly installed OpenCX widget
+`@opencx/widget-react-headless@5.7.2` and
+`@opencx/widget-core@5.7.2`. Match any other directly installed OpenCX widget
 packages to that exact version. React 18 and 19 are supported.
 
 For script embeds, use:
@@ -35,7 +35,7 @@ For script embeds, use:
 ```html
 <script
   defer
-  src="https://unpkg.com/@opencx/widget@5.4.2/dist-embed/script.js"
+  src="https://unpkg.com/@opencx/widget@5.7.2/dist-embed/script.js"
 ></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {
@@ -129,6 +129,16 @@ reconciles persisted history and human replies. Layout and delivery are independ
   messages alike. Custom composers must stay locked while
   `isAwaitingRequiredTap(messages, session)` from `@opencx/widget-core` is
   true and no reply is streaming; it is false for options without the flag.
+- 5.7.1 recovers an unreadable `streamingFetch` response through the global fetch
+  and warns once. Return the original `expo/fetch` response from wrappers; if
+  the global fetch cannot stream either, the reply appears once saved. The
+  headless package no longer requires `react-dom`. A failed send clears when
+  its saved reply is confirmed.
+- 5.7.2 also clears a failed resume once a settled turn is confirmed to answer
+  the visitor's latest message and its reply is visible. Keep custom error UI
+  bound to `useAgentChatUi().turnFailed`, and verify foreground recovery before
+  history finishes loading. React Native still needs explicit foreground and
+  connectivity calls to `resumeInterruptedTurn()`.
 
 Preserve the customer's requested target version. These additions do not require
 turning on streaming, page access, or personal connections for an existing embed.
@@ -231,7 +241,8 @@ verify the backend supports the flow before enabling it.
 - The stock UI handles form elicitation. Custom headless UIs must add the form
   list/response flow using published core declarations, including field validation,
   selection limits, decline/cancel, and expiry; rendering live text alone is not
-  sufficient. There is no public `useElicitation` hook in 5.4.2.
+  sufficient. Inspect installed exports rather than assuming a public
+  `useElicitation` hook exists.
 - Simple approvals may be remembered for the exact account/server/tool/inputs/form.
   Test **Always allow**, a changed request that still asks, and **Connections →
   Saved approvals → Remove approval**. Disconnect removes the personal grant and
