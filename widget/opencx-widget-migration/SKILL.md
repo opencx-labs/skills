@@ -218,10 +218,8 @@ verify the backend supports the flow before enabling it.
 - Pass the authenticated backend's widget user token as `user.token`. Unsigned
   user data does not grant access. Keep organization keys and provider credentials
   on the server.
-- Tokens issued with explicit `mcp_access` expire after one hour; renew them before
-  expiry and after tab suspension. Chat-only tokens issued without `mcp_access`
-  keep their existing non-expiring behavior. Upgrading does not require chat-only
-  customers to add renewal. Updating a token preserves the session when the signed
+- Widget user tokens do not expire, with or without `mcp_access`, so upgrading
+  never requires adding renewal. Updating a token preserves the session when the signed
   owner, account and normalized server-ID list stay the same. Changes to user,
   account, organization or that list reset active state. Omitting `mcp_access` and
   using `mcp_access: { server_ids: [] }` are equivalent when `account_id` is absent

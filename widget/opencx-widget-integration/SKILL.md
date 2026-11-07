@@ -261,11 +261,8 @@ The backend authentication request can include `mcp_access`:
 - Include `mcp_access.account_id` when a user can switch accounts or workspaces.
   Resolve both the account and allowed servers from trusted backend state.
 
-Tokens issued with explicit `mcp_access` expire after one hour. Renew these through
-the customer's backend before expiry and when returning to a suspended tab, then
-update `user.token`. Chat-only tokens issued without `mcp_access` keep their
-existing non-expiring behavior; upgrading the widget does not require adding a
-renewal loop for them. Renewal preserves the session when the signed owner,
+Widget user tokens do not expire, with or without `mcp_access`; there is no
+renewal loop to add. Replacing `user.token` preserves the session when the signed owner,
 account and normalized server-ID list stay the same. Changing user, account,
 organization or that list resets active state. Claim representation alone does
 not guarantee a reset: omitting `mcp_access` and using
