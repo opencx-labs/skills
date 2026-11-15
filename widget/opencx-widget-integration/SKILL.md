@@ -130,6 +130,11 @@ Use the installed `WidgetConfig` declaration for exact keys and defaults.
   and the `widgetTrigger` slot's `unreadCount` keep working. The backend owns
   read state; older backends that omit it produce no marks. Opening the list or
   minimizing Companion to its input bar does not mark a session as read.
+- Visitor activity (5.10.0+): `hooks.onUserActivity(event)` reports every click,
+  key press, scroll start/end, and visitor-sent message inside the widget, with
+  the current screen (and help center topic or article) and the open session.
+  It is not throttled; throttle before network calls. Use it to keep the host's
+  signed-in session alive while the visitor chats.
 - Identity: distinguish the organization widget `token` from `user.token` for
   visitor authentication. Follow the [authentication guide](https://docs.open.cx/widget/authentication)
   for the selected version; use the application's server for signing credentials.
