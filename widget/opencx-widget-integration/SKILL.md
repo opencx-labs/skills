@@ -266,8 +266,12 @@ The backend authentication request can include `mcp_access`:
 - Include `mcp_access.account_id` when a user can switch accounts or workspaces.
   Resolve both the account and allowed servers from trusted backend state.
 
-Widget user tokens do not expire, with or without `mcp_access`; there is no
-renewal loop to add. Replacing `user.token` preserves the session when the signed owner,
+Widget user tokens do not expire by default, with or without `mcp_access`. A
+backend that sends `expires_in_seconds` (120 to 86,400) to authenticate gets a
+token with that lifetime: add `user.refreshToken` (from Widget 5.12.0) so the
+widget renews it through your backend, and call `POST /widget/revoke-user` on
+logout. See https://docs.open.cx/widget/authentication#short-lived-tokens-and-renewal.
+Replacing `user.token` preserves the session when the signed owner,
 account and normalized server-ID list stay the same. Changing user, account,
 organization or that list resets active state. Claim representation alone does
 not guarantee a reset: omitting `mcp_access` and using

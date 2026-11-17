@@ -218,8 +218,10 @@ verify the backend supports the flow before enabling it.
 - Pass the authenticated backend's widget user token as `user.token`. Unsigned
   user data does not grant access. Keep organization keys and provider credentials
   on the server.
-- Widget user tokens do not expire, with or without `mcp_access`, so upgrading
-  never requires adding renewal. Updating a token preserves the session when the signed
+- Widget user tokens do not expire by default, with or without `mcp_access`, so
+  upgrading never requires adding renewal. Only a backend that opts into
+  `expires_in_seconds` needs `user.refreshToken` (Widget 5.12.0 and later); see
+  https://docs.open.cx/widget/authentication#short-lived-tokens-and-renewal. Updating a token preserves the session when the signed
   owner, account and normalized server-ID list stay the same. Changes to user,
   account, organization or that list reset active state. Omitting `mcp_access` and
   using `mcp_access: { server_ids: [] }` are equivalent when `account_id` is absent
