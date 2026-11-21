@@ -270,7 +270,11 @@ Widget user tokens do not expire by default, with or without `mcp_access`. A
 backend that sends `expires_in_seconds` (120 to 86,400) to authenticate gets a
 token with that lifetime: add `user.refreshToken` (from Widget 5.12.0) so the
 widget renews it through your backend, and call `POST /widget/revoke-user` on
-logout. See https://docs.open.cx/widget/authentication#short-lived-tokens-and-renewal.
+logout. A React host that already knows when it has a new token can push it
+instead with `renewUserToken(token)` on the `<Widget>` ref, or from
+`useTokenRenewal()` in a headless UI (from Widget 5.15.0); it takes a token for
+the same visitor only and returns `{ ok: true }` or `{ ok: false, reason }`.
+See https://docs.open.cx/widget/authentication#short-lived-tokens-and-renewal.
 Replacing `user.token` preserves the session when the signed owner,
 account and normalized server-ID list stay the same. Changing user, account,
 organization or that list resets active state. Claim representation alone does
