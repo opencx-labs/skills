@@ -17,7 +17,7 @@ the user's version choice. Check registry tags when selecting a new version:
 npm view @opencx/widget-react dist-tags --json --prefer-online
 ```
 
-These examples pin the published stable release `5.16.0`. Re-check registry tags
+These examples pin the published stable release `5.16.1`. Re-check registry tags
 before choosing a newer version. Use a prerelease only when requested. To remain on v4, pin `4.0.63` instead of `latest`, which can
 move to a new major. Do not add v5-only options to a v4 installation. Installing
 this skill does not install the widget.
@@ -41,7 +41,7 @@ this order; `defer` completes before `DOMContentLoaded`.
 ```html
 <script
   defer
-  src="https://unpkg.com/@opencx/widget@5.16.0/dist-embed/script.js"
+  src="https://unpkg.com/@opencx/widget@5.16.1/dist-embed/script.js"
 ></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {
@@ -54,18 +54,20 @@ For inline HTML, provide `<div id="opencx-root"></div>` in the body and set
 `inline: true`. Mount only one integration on a page; do not also mount React
 `Widget` beside the script embed.
 
-Widget 5.16.0's `dist-embed/script.js` is a self-contained classic script. Copying
+Widget 5.16.1's `dist-embed/script.js` is a self-contained classic script. Copying
 that file is sufficient for self-hosting the widget code; it does not fetch a
-separate `widget.js` or lazy code chunks. API, attachment and configured asset
-requests still need the host's normal permissions. Verify CSP with the script
-and initializer. Repeated script loads reuse one runtime. Earlier betas used a
-split loader; keep their complete versioned directories available for open tabs
-when replacing them with a stable v5 build.
+separate `widget.js` or lazy code chunks. From 5.16.1, an embed with `voice`
+also needs `dist-embed/voice.js` in the same folder; it loads only when a call
+starts. API, attachment and configured asset requests still need the host's
+normal permissions. Verify CSP with the script and initializer. Repeated script
+loads reuse one runtime. Earlier betas used a split loader; keep their complete
+versioned directories available for open tabs when replacing them with a stable
+v5 build.
 
 ## React installation
 
 ```bash
-npm install --save-exact @opencx/widget-react@5.16.0
+npm install --save-exact @opencx/widget-react@5.16.1
 ```
 
 Mount the widget once in the app shell:
@@ -321,7 +323,7 @@ not promise arbitrary ready-credential import during user authentication.
 
 ## Add voice calling when requested
 
-Widget 5.16.0 supports `voice: { getToken, agentName?, greeting? }` in the
+Widget 5.16.1 supports `voice: { getToken, agentName?, greeting? }` in the
 script embed and stock React UI. Check [Widget configuration](https://docs.open.cx/widget/configuration#add-voice-calling)
 and the [Voice SDK guide](https://docs.open.cx/phone/voice-sdk) before enabling it.
 Use the host app's authenticated server to obtain short-lived call credentials.

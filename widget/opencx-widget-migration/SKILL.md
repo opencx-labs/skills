@@ -16,18 +16,18 @@ where the migration requires a change. This skill does not require another skill
 npm view @opencx/widget-react dist-tags --json --prefer-online
 ```
 
-These examples pin the published stable release `5.16.0`. Re-check registry tags
+These examples pin the published stable release `5.16.1`. Re-check registry tags
 before selecting a newer target; use a prerelease only when requested. Keep the
 old version and configuration for rollback. Customers staying on v4 should pin
 `4.0.63`, since `latest` can move to a new major. For a repeatable stable migration:
 
 ```bash
-npm install --save-exact @opencx/widget-react@5.16.0
+npm install --save-exact @opencx/widget-react@5.16.1
 ```
 
 Use the customer's package manager. For headless integrations, install
-`@opencx/widget-react-headless@5.16.0` and
-`@opencx/widget-core@5.16.0`. Match any other directly installed OpenCX widget
+`@opencx/widget-react-headless@5.16.1` and
+`@opencx/widget-core@5.16.1`. Match any other directly installed OpenCX widget
 packages to that exact version. React 18 and 19 are supported.
 
 For script embeds, use:
@@ -35,7 +35,7 @@ For script embeds, use:
 ```html
 <script
   defer
-  src="https://unpkg.com/@opencx/widget@5.16.0/dist-embed/script.js"
+  src="https://unpkg.com/@opencx/widget@5.16.1/dist-embed/script.js"
 ></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {
@@ -55,10 +55,12 @@ reconciles persisted history and human replies. Layout and delivery are independ
 ## Review migration-sensitive behavior
 
 - **Self-hosted assets:** stable v5's `dist-embed/script.js` is a self-contained classic
-  script; copying it is sufficient for the widget code. Repeated loads reuse one
-  runtime. Earlier betas used `widget.js` and lazy chunks; preserve those complete
-  versioned directories for already-open tabs when upgrading. API, attachment and
-  asset requests still need the host's normal permissions.
+  script; copying it is sufficient for the widget code. From 5.16.1, an embed
+  with `voice` also needs `dist-embed/voice.js` in the same folder; it loads only
+  when a call starts. Repeated loads reuse one runtime. Earlier betas used
+  `widget.js` and lazy chunks; preserve those complete versioned directories for
+  already-open tabs when upgrading. API, attachment and asset requests still need
+  the host's normal permissions.
 - **Sanitized HTML:** bot/agent replies remain sanitized. Configured footers
   preserve safe color, typography and spacing. Scripts, handlers, embedded frames,
   resource-loading CSS and positioning are still removed. Re-test custom markup.
@@ -256,7 +258,7 @@ belongs in a browser callback or widget configuration.
 
 ## Add voice calling when requested
 
-Widget 5.16.0 supports `voice: { getToken, agentName?, greeting? }` in the
+Widget 5.16.1 supports `voice: { getToken, agentName?, greeting? }` in the
 script embed and stock React UI. Check [Widget configuration](https://docs.open.cx/widget/configuration#add-voice-calling)
 and the [Voice SDK guide](https://docs.open.cx/phone/voice-sdk) before enabling it.
 Use the host app's authenticated server to obtain short-lived call credentials.
