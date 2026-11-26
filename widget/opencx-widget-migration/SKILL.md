@@ -16,18 +16,18 @@ where the migration requires a change. This skill does not require another skill
 npm view @opencx/widget-react dist-tags --json --prefer-online
 ```
 
-These examples pin the published stable release `5.7.2`. Re-check registry tags
+These examples pin the published stable release `5.16.0`. Re-check registry tags
 before selecting a newer target; use a prerelease only when requested. Keep the
 old version and configuration for rollback. Customers staying on v4 should pin
 `4.0.63`, since `latest` can move to a new major. For a repeatable stable migration:
 
 ```bash
-npm install --save-exact @opencx/widget-react@5.7.2
+npm install --save-exact @opencx/widget-react@5.16.0
 ```
 
 Use the customer's package manager. For headless integrations, install
-`@opencx/widget-react-headless@5.7.2` and
-`@opencx/widget-core@5.7.2`. Match any other directly installed OpenCX widget
+`@opencx/widget-react-headless@5.16.0` and
+`@opencx/widget-core@5.16.0`. Match any other directly installed OpenCX widget
 packages to that exact version. React 18 and 19 are supported.
 
 For script embeds, use:
@@ -35,7 +35,7 @@ For script embeds, use:
 ```html
 <script
   defer
-  src="https://unpkg.com/@opencx/widget@5.7.2/dist-embed/script.js"
+  src="https://unpkg.com/@opencx/widget@5.16.0/dist-embed/script.js"
 ></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {
@@ -253,6 +253,18 @@ must not collect credentials. Requests currently expire after 50 seconds; verify
 that late responses do not execute the requested action. Customer-backend access
 token reuse is optional and requires separate server-side setup; no token export
 belongs in a browser callback or widget configuration.
+
+## Add voice calling when requested
+
+Widget 5.16.0 supports `voice: { getToken, agentName?, greeting? }` in the
+script embed and stock React UI. Check [Widget configuration](https://docs.open.cx/widget/configuration#add-voice-calling)
+and the [Voice SDK guide](https://docs.open.cx/phone/voice-sdk) before enabling it.
+Use the host app's authenticated server to obtain short-lived call credentials.
+Forward `requestId` and `signal` from `getToken`, and keep the permanent API
+key server-side. The script embed also exposes
+`window.openCXWidget.startVoiceCall()` for a user gesture after initialization.
+Check microphone denial, mute, hangup, and transcript display. The transcript
+shown in chat after hangup does not persist there across reloads.
 
 ## Verify and report
 
